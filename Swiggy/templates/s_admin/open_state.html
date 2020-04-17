@@ -1,0 +1,82 @@
+{% extends 's_admin/common.html' %}
+{% block common %}
+    {% load static %}
+    <table align="center" border="0">
+    <tr>
+        <th>
+            {% include 's_admin/menu.html' %}
+        </th>
+    </tr>
+        <tr>
+            <th>
+                <form action="{% url 'save_state' %}" method="post">
+                    {% csrf_token %}
+                    {% if sf %}
+                <table align="center" border="2" bgcolor="aqua" width="500">
+                    <tr>
+                        <th colspan="3" height="60" style="text-align: center">
+                            State Operation</th>
+                    </tr>
+                    <tr>
+                        <th>{{ sf.state_name.label }}</th>
+                        <th>{{ sf.state_name }}</th>
+                        <th>{{ sf.state_name.errors }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: center" height="40"><button type="submit">Save</button> </th>
+                    </tr>
+                </table>
+                    {% elif update_data %}
+                    <form action="{% url 'update_state_data' %}" method="post">
+                    <table align="center" border="2" bgcolor="#ff8c00" width="500">
+                    <tr>
+                        <th colspan="3" height="60" style="text-align: center;font-size: 30px">
+                            State Update Operation</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center" height="50">State No</th>
+                        <th style="text-align: center">{{ update_data.sno}}</th>
+                        <th><input type="hidden" value="{{ update_data.sno }}" name="s1"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center" height="50">State name</th>
+                        <th style="text-align: center">
+                            <input type="text" value="{{ update_data.sname}}" name="s2">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3" style="text-align: center" height="40"><button type="submit">Save</button> </th>
+                    </tr>
+                    </table>
+                    {% endif %}
+                </form>
+                </form>
+            </th>
+        </tr>
+    <tr>
+        <th height="60">
+            <table align="center" border="2">
+                <tr bgcolor="yellow">
+                    <th style="text-align: center" width="50" height="50">No</th>
+                    <th style="text-align: center" width="200">Name</th>
+                    <th style="text-align: center" width="100">Update</th>
+                    <th style="text-align: center" width="100">Delete</th>
+                </tr>
+                {% for x in sdata %}
+                    <tr>
+                    <th style="text-align: center" width="50">{{ x.state_no }}</th>
+                    <th style="text-align: center" width="200">{{ x.state_name }}</th>
+                    <th style="text-align: center" width="100">
+                        <a href="{% url 'update_state' %}?sno={{ x.state_no }}&sname={{ x.state_name }}">
+                            <img src="{% static 'Image/update.png' %}" width="30" height="30"></a></th>
+                    <th style="text-align: center" width="100">
+                        <a href="{% url 'delete_state' %}?sno={{ x.state_no }}">
+                            <img src="{% static 'Image/delete.jpg' %}" width="30" height="30"></a>
+                    </th>
+                    </tr>
+                {% endfor %}
+            </table>
+        </th>
+    </tr>
+    </table>
+{% endblock %}
